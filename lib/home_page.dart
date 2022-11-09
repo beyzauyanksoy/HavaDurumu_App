@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import 'detail_page.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 
@@ -74,90 +76,99 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15),
-                child: Container(
-                  width: 340,
-                  height: 190,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                          colors: [Color(0xff4F7FFA), Color(0xff335FD1)])),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 15, left: 18, right: 18),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Senin, 20 Desember 2021",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                            ),
-                            Text(
-                              "3.30 PM",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: Container(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DetailPage()),
+                    );
+                  },
+                  child: Container(
+                    width: 340,
+                    height: 190,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                            colors: [Color(0xff4F7FFA), Color(0xff335FD1)])),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 15, left: 18, right: 18),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.asset("assets/partly_cloudy.png"),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 40),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 98,
+                              Text(
+                                "Senin, 20 Desember 2021",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                              Text(
+                                "3.30 PM",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Image.asset("assets/partly_cloudy.png"),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 40),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 98,
+                                        ),
+                                        child: Text(
+                                          "18°C",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
                                       ),
-                                      child: Text(
-                                        "18°C",
+                                      Text(
+                                        "Hujan Berawan",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 20),
                                       ),
-                                    ),
-                                    Text(
-                                      "Hujan Berawan",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18),
-                        child: Container(
-                          //color: Colors.amber,
-                          // width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: const [
-                              Text(
-                                "Terakhir update 3.00 PM",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Icon(
-                                  Icons.refresh,
-                                  color: Colors.white,
-                                  size: 18,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18),
+                          child: Container(
+                            //color: Colors.amber,
+                            // width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              children: const [
+                                Text(
+                                  "Terakhir update 3.00 PM",
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                              )
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                  child: Icon(
+                                    Icons.refresh,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -257,10 +268,8 @@ class _HomePageState extends State<HomePage> {
                         const EdgeInsets.only(bottom: 20, left: 18, right: 15),
                     child: Container(
                       decoration: BoxDecoration(
-                             color: Color(0xffD2DFFF),
-                             borderRadius: BorderRadius.circular(10)
-                      ),
-                     
+                          color: Color(0xffD2DFFF),
+                          borderRadius: BorderRadius.circular(10)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -288,9 +297,15 @@ class _HomePageState extends State<HomePage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('Selasa',style: TextStyle(fontWeight:FontWeight.w600 ,fontSize: 15),),
+                                      Text(
+                                        'Selasa',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15),
+                                      ),
                                       Padding(
                                         padding: const EdgeInsets.only(top: 5),
                                         child: Text('Hujan petir'),
@@ -310,7 +325,12 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("19º C",style: TextStyle(fontWeight:FontWeight.w600 ,fontSize: 14),),
+                                  Text(
+                                    "19º C",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                  ),
                                   Icon(Icons.arrow_right),
                                 ],
                               ),
