@@ -216,7 +216,7 @@ class _DetailPageState extends State<DetailPage> {
                                 child: CircularProgressIndicator(
                                   backgroundColor: Colors.grey.withOpacity(.5),
                                   color: Colors.green[600],
-                                  value: .12,
+                                  value: 0.12,
                                   strokeWidth: 7,
                                 ),
                               ),
@@ -251,6 +251,52 @@ class _DetailPageState extends State<DetailPage> {
                 )
               ],
             ),
+              GridView.builder(
+                padding: const EdgeInsets.all(0),
+              
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 3,
+              crossAxisCount: 2,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 12.0,
+              ),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 10,right: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                       color: const Color(0xffF3F3F3),
+                       borderRadius: BorderRadius.circular(15)
+                  ),
+                 
+                 
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: [
+                        Image.asset("assets/smallicon.png"),
+                        const SizedBox(width: 15,),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('86%'),
+                            SizedBox(height: 5,),
+                            Text('Kelembaban'),
+                          ],
+                        )
+                      
+                      ],
+                    ),
+                  ),
+                ),
+              );
+              },
+            )
+      
+            
           ],
         ),
       ),
