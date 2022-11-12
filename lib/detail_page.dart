@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -65,27 +66,38 @@ class _DetailPageState extends State<DetailPage> {
                     SizedBox(
                       height: 15,
                     ),
-                    const Text(
-                      "Senin, 20 Desember 2021 - 3.30 PM",
-                      style: TextStyle(color: Colors.white, fontSize: 15.0),
+                    FadeInDown(
+                      duration: Duration(seconds: 1),
+                      child: const Text(
+                        "Senin, 20 Desember 2021 - 3.30 PM",
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
                     ),
                     SizedBox(
                       height: 24,
                     ),
-                    Image.asset("assets/partly_cloudy.png"),
-                    const Text(
-                      "18º C",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
+                    FadeInDown(
+                        duration: Duration(seconds: 2),
+                        child: Image.asset("assets/partly_cloudy.png")),
+                    FadeInRight(
+                      duration: Duration(seconds: 2),
+                      child: const Text(
+                        "18º C",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                        ),
                       ),
                     ),
-                    const Text(
-                      "Hujan Berawan",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600),
+                    FadeInLeft(
+                      duration: Duration(seconds: 2),
+                      child: const Text(
+                        "Hujan Berawan",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                     SizedBox(
                       height: 35,
@@ -251,52 +263,49 @@ class _DetailPageState extends State<DetailPage> {
                 )
               ],
             ),
-              GridView.builder(
-                padding: const EdgeInsets.all(0),
-              
+            GridView.builder(
+              padding: const EdgeInsets.all(0),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 3,
-              crossAxisCount: 2,
-              crossAxisSpacing: 5.0,
-              mainAxisSpacing: 12.0,
+                crossAxisCount: 2,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 12.0,
               ),
               itemCount: 4,
               itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 10,right: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                       color: const Color(0xffF3F3F3),
-                       borderRadius: BorderRadius.circular(15)
-                  ),
-                 
-                 
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Row(
-                      children: [
-                        Image.asset("assets/smallicon.png"),
-                        const SizedBox(width: 15,),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text('86%'),
-                            SizedBox(height: 5,),
-                            Text('Kelembaban'),
-                          ],
-                        )
-                      
-                      ],
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xffF3F3F3),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          Image.asset("assets/smallicon.png"),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text('86%'),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text('Kelembaban'),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
               },
             )
-      
-            
           ],
         ),
       ),
