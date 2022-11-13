@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -13,6 +14,28 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  GlobalKey _one = GlobalKey();
+  GlobalKey _two = GlobalKey();
+  GlobalKey _three = GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    someEvent();
+  }
+
+  someEvent() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(
+          Duration(
+            seconds: 1,
+          ), () {
+        return ShowCaseWidget.of(context).startShowCase([_one, ]);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,11 +104,15 @@ class _DetailPageState extends State<DetailPage> {
                         child: Image.asset("assets/partly_cloudy.png")),
                     FadeInRight(
                       duration: Duration(seconds: 2),
-                      child: const Text(
-                        "18º C",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
+                      child: Showcase(
+                        description: 'Dereceye buradan bakabilirsiniz.',
+                        key: _one,
+                        child: const Text(
+                          "18º C",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
                     ),
