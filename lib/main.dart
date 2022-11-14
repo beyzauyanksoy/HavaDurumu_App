@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weatherapp/providers/weather_provider.dart';
 
 import 'home_page.dart';
 import 'home_show_case.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<WeatherProvider>(create: ((context) => WeatherProvider()))
+  ],
+  child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final wetProvider=Provider.of<WeatherProvider>(context,listen: false);
+    wetProvider.getWeatherData(context);
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
