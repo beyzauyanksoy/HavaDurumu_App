@@ -1,9 +1,6 @@
-import 'dart:ui';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class DetailPage extends StatefulWidget {
@@ -14,9 +11,9 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  GlobalKey _one = GlobalKey();
-  GlobalKey _two = GlobalKey();
-  GlobalKey _three = GlobalKey();
+  final GlobalKey _one = GlobalKey();
+  final GlobalKey _two = GlobalKey();
+  final GlobalKey _three = GlobalKey();
 
   @override
   void initState() {
@@ -28,7 +25,7 @@ class _DetailPageState extends State<DetailPage> {
   someEvent() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(
-          Duration(
+          const Duration(
             seconds: 1,
           ), () {
         return ShowCaseWidget.of(context).startShowCase([_one, ]);
@@ -86,24 +83,24 @@ class _DetailPageState extends State<DetailPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     FadeInDown(
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(seconds: 1),
                       child: const Text(
                         "Senin, 20 Desember 2021 - 3.30 PM",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     FadeInDown(
-                        duration: Duration(seconds: 2),
+                        duration: const Duration(seconds: 2),
                         child: Image.asset("assets/partly_cloudy.png")),
                     FadeInRight(
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                       child: Showcase(
                         description: 'Dereceye buradan bakabilirsiniz.',
                         key: _one,
@@ -117,7 +114,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                     FadeInLeft(
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                       child: const Text(
                         "Hujan Berawan",
                         style: TextStyle(
@@ -126,7 +123,7 @@ class _DetailPageState extends State<DetailPage> {
                             fontWeight: FontWeight.w600),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 35,
                     ),
                     Row(
@@ -153,9 +150,9 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 24, left: 16),
-              child: Container(
+            const Padding(
+              padding: EdgeInsets.only(top: 24, left: 16),
+              child: SizedBox(
                 width: double.infinity,
                 child: Text(
                   "Cuaca Per Jam",
@@ -168,7 +165,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
-              child: Container(
+              child: SizedBox(
                 height: 110,
                 // color: Colors.blue,
                 child: ListView.builder(
@@ -187,7 +184,7 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             width: 60,
                             height: 60,
                             child: Image.asset("assets/partly_cloudy.png"),
@@ -216,9 +213,9 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 24, left: 16),
-              child: Container(
+            const Padding(
+              padding: EdgeInsets.only(top: 24, left: 16),
+              child: SizedBox(
                 width: double.infinity,
                 child: Text(
                   'Detail Informasi',
@@ -231,24 +228,24 @@ class _DetailPageState extends State<DetailPage> {
               children: [
                 Container(
                   //color: Colors.red,
-                  padding: EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20),
                   height: 150,
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         // color: Colors.amber,
                         width: 80,
                         height: 80,
                         child: Stack(
                           children: [
-                            Center(
+                            const Center(
                                 child: Text(
                               "12",
                               style:
                                   TextStyle(color: Colors.green, fontSize: 24),
                             )),
                             Center(
-                              child: Container(
+                              child: SizedBox(
                                 //color: Colors.yellow,
                                 height: 90,
                                 width: 120,

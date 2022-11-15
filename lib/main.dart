@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weatherapp/providers/weather_provider.dart';
 
-import 'home_page.dart';
 import 'home_show_case.dart';
 
 void main() {
@@ -35,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeShowCase(),
+      home: const HomeShowCase(),
     );
   }
 }

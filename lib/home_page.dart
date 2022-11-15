@@ -1,25 +1,22 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-import 'detail_page.dart';
 import 'detail_show_case.dart';
 import 'providers/weather_provider.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> list = <String>[
+  List<String> list = [
     'Tanjungsiang, Subang',
     'İstanbul',
     'Ankara',
@@ -27,9 +24,9 @@ class _HomePageState extends State<HomePage> {
   ];
   String dropdownValue = 'Tanjungsiang, Subang';
 
-  GlobalKey _one = GlobalKey();
-  GlobalKey _two = GlobalKey();
-  GlobalKey _three = GlobalKey();
+  final GlobalKey _one = GlobalKey();
+  final GlobalKey _two = GlobalKey();
+  final GlobalKey _three = GlobalKey();
   WeatherProvider? wetProvider;
 
   @override
@@ -37,7 +34,8 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     wetProvider = Provider.of<WeatherProvider>(context, listen: false);
-    wetProvider!.getWeatherData(context);
+    wetProvider!.getWeatherData();
+    wetProvider!.getClockData();
     someEvent();
   }
 
@@ -101,10 +99,11 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Container(
-                            width: 47,
-                            height: 47,
-                            color: Colors.blue,
-                            child: const Icon(Icons.search))
+                          width: 47,
+                          height: 47,
+                          color: Colors.blue,
+                          child: const Icon(Icons.search),
+                        ),
                       ],
                     ),
                   ),
@@ -146,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                                           FadeInDown(
                                             duration: Duration(seconds: 1),
                                             child: Text(
-                                              "${provider.response.sys!.country}, 20 Desember 2021",
+                                              "${provider.response?.sys?.country ?? ""}, ${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).day}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).month}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).year}",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -155,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                                           FadeInUp(
                                             duration: Duration(seconds: 2),
                                             child: Text(
-                                              "3.30 PM",
+                                              "${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).hour}:${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).minute}",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -189,8 +188,12 @@ class _HomePageState extends State<HomePage> {
                                                         description:
                                                             'dereceyi buradan görüntüleyebilirsiniz',
                                                         child: Text(
-                                                          provider.response.main!.temp!.toInt().toString()+"°C",
-
+                                                          "${double.parse(provider
+                                                                          .response
+                                                                          ?.main
+                                                                          ?.temp
+                                                                          .toString() ??
+                                                                      "0")}°C",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -199,9 +202,9 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      provider.response
-                                                          .weather![0].main
-                                                          .toString(),
+                                                      provider.response?.weather
+                                                              ?.first.main ??
+                                                          "",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20),
@@ -224,8 +227,7 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                provider.response.name!
-                                                    .toString(),
+                                                provider.response?.name ?? "",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -252,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30, top: 20, bottom: 10),
-                  child: Container(
+                  child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: const Text(
                         "Cuaca Per Jam",
@@ -260,46 +262,71 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 20, fontWeight: FontWeight.w500),
                       )),
                 ),
-                Container(
-                  //color: Colors.amber,
-                  width: 350,
-                  height: 120,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 24,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Container(
-                          width: 80,
-                          // color: Colors.red,
-                          color: const Color(0xffFBFBFB),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Image.asset(
-                                  "assets/partly_cloudy.png",
-                                  width: 55,
+                Consumer<WeatherProvider>(
+                  builder:
+                      (BuildContext context, clockProvider, Widget? child) {
+                    return SizedBox(
+                      //color: Colors.amber,
+                      height: 120,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            clockProvider.clockResponse?.list?.length ?? 0,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              clockProvider.response?.weather?.first.main =
+                                  clockProvider.clockResponse?.list?[index]
+                                          .weather?.first.main ??
+                                      "";
+                              clockProvider.response?.dt =
+                                  clockProvider.clockResponse?.list?[index].dt;
+                              clockProvider.response?.main?.temp = clockProvider
+                                  .clockResponse?.list?[index].main?.temp;
+                              clockProvider.notifyListeners();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                width: 80,
+                                // color: Colors.red,
+                                color: const Color(0xffFBFBFB),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Image.asset(
+                                        "assets/partly_cloudy.png",
+                                        width: 55,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 0, bottom: 10),
+                                      child: Text(
+                                          "${clockProvider.clockResponse?.list?[index].main?.temp ?? ""}"),
+                                    ),
+                                    Text(clockProvider
+                                            .clockResponse?.list?[index].dtTxt
+                                            ?.split(" ")
+                                            .last
+                                            .substring(0, 5) ??
+                                        "")
+                                  ],
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 0, bottom: 10),
-                                child: Text('20'),
-                              ),
-                              const Text('4.00 PM')
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30, bottom: 3, top: 10),
-                  child: Container(
+                  child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Text(
                         "Harian",
@@ -351,7 +378,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               //color: Colors.amber,
                               width: 170,
                               child: Row(
@@ -398,7 +425,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 30),
-                              child: Container(
+                              child: SizedBox(
                                 //color: Colors.blueGrey,
                                 width: 75,
                                 child: Row(
