@@ -4,10 +4,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import 'detail_page.dart';
 import 'detail_show_case.dart';
+import 'providers/weather_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -28,11 +30,14 @@ class _HomePageState extends State<HomePage> {
   GlobalKey _one = GlobalKey();
   GlobalKey _two = GlobalKey();
   GlobalKey _three = GlobalKey();
+  WeatherProvider? wetProvider;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    wetProvider = Provider.of<WeatherProvider>(context, listen: false);
+    wetProvider!.getWeatherData(context);
     someEvent();
   }
 
@@ -114,111 +119,134 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => DetailShowCase()),
                       );
                     },
-                    child: Container(
-                      width: 340,
-                      height: 190,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                              colors: [Color(0xff4F7FFA), Color(0xff335FD1)])),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, left: 18, right: 18),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                FadeInDown(
-                                  duration: Duration(seconds: 1),
-                                  child: Text(
-                                    "Senin, 20 Desember 2021",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                ),
-                                FadeInUp(
-                                  duration: Duration(seconds: 2),
-                                  child: Text(
-                                    "3.30 PM",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 25),
-                            child: Container(
-                              child: FadeInLeft(
-                                duration: Duration(seconds: 1),
-                                child: Row(
+                    child: Consumer<WeatherProvider>(
+                      builder: (BuildContext context, provider, Widget? child) {
+                        return provider.isLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Container(
+                                width: 340,
+                                height: 190,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(colors: [
+                                      Color(0xff4F7FFA),
+                                      Color(0xff335FD1)
+                                    ])),
+                                child: Column(
                                   children: [
-                                    Image.asset("assets/partly_cloudy.png"),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 40),
-                                      child: Column(
+                                      padding: const EdgeInsets.only(
+                                          top: 15, left: 18, right: 18),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              right: 98,
-                                            ),
-                                            child: Showcase(
-                                              key: _two,
-                                              description:
-                                                  'dereceyi buradan görüntüleyebilirsiniz',
-                                              child: Text(
-                                                "18°C",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20),
-                                              ),
+                                          FadeInDown(
+                                            duration: Duration(seconds: 1),
+                                            child: Text(
+                                              "${provider.response.sys!.country}, 20 Desember 2021",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15),
                                             ),
                                           ),
-                                          Text(
-                                            "Hujan Berawan",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20),
-                                          ),
+                                          FadeInUp(
+                                            duration: Duration(seconds: 2),
+                                            child: Text(
+                                              "3.30 PM",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15),
+                                            ),
+                                          )
                                         ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18),
-                            child: Container(
-                              //color: Colors.amber,
-                              // width: MediaQuery.of(context).size.width,
-                              child: FadeInUp(
-                                duration: Duration(seconds: 1),
-                                child: Row(
-                                  children: const [
-                                    Text(
-                                      "Terakhir update 3.00 PM",
-                                      style: TextStyle(color: Colors.white),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 8),
-                                      child: Icon(
-                                        Icons.refresh,
-                                        color: Colors.white,
-                                        size: 18,
+                                      padding: const EdgeInsets.only(top: 25),
+                                      child: Container(
+                                        child: FadeInLeft(
+                                          duration: Duration(seconds: 1),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/partly_cloudy.png"),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 40),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                        right: 98,
+                                                      ),
+                                                      child: Showcase(
+                                                        key: _two,
+                                                        description:
+                                                            'dereceyi buradan görüntüleyebilirsiniz',
+                                                        child: Text(
+                                                          provider.response.main!.temp!.toInt().toString()+"°C",
+
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      provider.response
+                                                          .weather![0].main
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 18),
+                                      child: Container(
+                                        //color: Colors.amber,
+                                        // width: MediaQuery.of(context).size.width,
+                                        child: FadeInUp(
+                                          duration: Duration(seconds: 1),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                provider.response.name!
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 8),
+                                                child: Icon(
+                                                  Icons.refresh,
+                                                  color: Colors.white,
+                                                  size: 18,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     )
                                   ],
                                 ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                              );
+                      },
                     ),
                   ),
                 ),

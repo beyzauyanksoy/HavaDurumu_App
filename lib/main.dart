@@ -25,8 +25,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    final wetProvider=Provider.of<WeatherProvider>(context,listen: false);
-    wetProvider.getWeatherData(context);
+  
   }
   @override
   Widget build(BuildContext context) {
