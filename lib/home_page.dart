@@ -16,12 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> list = [
-    'Tanjungsiang, Subang',
-    'İstanbul',
-    'Ankara',
-    'İzmir'
-  ];
+  List<String> list = ['Tanjungsiang, Subang', 'İstanbul', 'Ankara', 'İzmir'];
   String dropdownValue = 'Tanjungsiang, Subang';
 
   final GlobalKey _one = GlobalKey();
@@ -61,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Container(
-                    color: Colors.red,
+                    //color: Colors.red,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -70,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                           key: _one,
                           child: Container(
                             width: 220,
-                            color: Colors.amber,
+                            //color: Colors.amber,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -101,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           width: 47,
                           height: 47,
-                          color: Colors.blue,
+                          // color: Colors.blue,
                           child: const Icon(Icons.search),
                         ),
                       ],
@@ -188,12 +183,7 @@ class _HomePageState extends State<HomePage> {
                                                         description:
                                                             'dereceyi buradan görüntüleyebilirsiniz',
                                                         child: Text(
-                                                          "${double.parse(provider
-                                                                          .response
-                                                                          ?.main
-                                                                          ?.temp
-                                                                          .toString() ??
-                                                                      "0")}°C",
+                                                          "${double.parse(provider.response?.main?.temp.toString() ?? "0")}°C",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
