@@ -1,7 +1,9 @@
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+
+import 'providers/weather_provider.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -28,7 +30,9 @@ class _DetailPageState extends State<DetailPage> {
           const Duration(
             seconds: 1,
           ), () {
-        return ShowCaseWidget.of(context).startShowCase([_one, ]);
+        return ShowCaseWidget.of(context).startShowCase([
+          _one,
+        ]);
       });
     });
   }
@@ -39,116 +43,123 @@ class _DetailPageState extends State<DetailPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              height: 370,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xff4F7FFA),
-                      Color(0xff335FD1),
-                    ]),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50, right: 16),
-                child: Column(
-                  children: [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Colors.white,
-                              size: 17,
+            Consumer<WeatherProvider>(
+              builder: (BuildContext context, provider, Widget? child) {
+                return Container(
+                  width: double.infinity,
+                  height: 370,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xff4F7FFA),
+                          Color(0xff335FD1),
+                        ]),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50, right: 16),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                   Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
+                              ),
+                              Text(
+                                provider.response?.name ?? "",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.more_horiz_outlined,
+                                color: Colors.white,
+                                size: 24.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        FadeInDown(
+                          duration: const Duration(seconds: 1),
+                          child: Text(
+                            "${provider.response?.sys?.country ?? ""}, ${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).day}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).month}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).year}",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        FadeInDown(
+                            duration: const Duration(seconds: 2),
+                            child: Image.asset("assets/partly_cloudy.png")),
+                        FadeInRight(
+                          duration: const Duration(seconds: 2),
+                          child: Showcase(
+                            description: 'Dereceye buradan bakabilirsiniz.',
+                            key: _one,
+                            child: Text(
+                              "${double.parse(provider.response?.main?.temp.toString() ?? "0")}°C",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
                             ),
                           ),
-                          const Text(
-                            "Tanjungsiang, Subang",
+                        ),
+                        FadeInLeft(
+                          duration: const Duration(seconds: 2),
+                          child: Text(
+                            provider.response?.weather?.first.main ?? "",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${provider.response?.name ?? ""} ${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).hour}:${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).minute}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.0,
+                              ),
                             ),
-                          ),
-                          const Icon(
-                            Icons.more_horiz_outlined,
-                            color: Colors.white,
-                            size: 24.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    FadeInDown(
-                      duration: const Duration(seconds: 1),
-                      child: const Text(
-                        "Senin, 20 Desember 2021 - 3.30 PM",
-                        style: TextStyle(color: Colors.white, fontSize: 15.0),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    FadeInDown(
-                        duration: const Duration(seconds: 2),
-                        child: Image.asset("assets/partly_cloudy.png")),
-                    FadeInRight(
-                      duration: const Duration(seconds: 2),
-                      child: Showcase(
-                        description: 'Dereceye buradan bakabilirsiniz.',
-                        key: _one,
-                        child: const Text(
-                          "18º C",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    FadeInLeft(
-                      duration: const Duration(seconds: 2),
-                      child: const Text(
-                        "Hujan Berawan",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Terakhir update 3.00 PM",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13.0,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Icon(
-                          Icons.refresh,
-                          size: 18,
-                          color: Colors.white,
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Icon(
+                              Icons.refresh,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
             const Padding(
               padding: EdgeInsets.only(top: 24, left: 16),

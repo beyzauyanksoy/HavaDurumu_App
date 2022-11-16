@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                                           FadeInDown(
                                             duration: Duration(seconds: 1),
                                             child: Text(
-                                              "${provider.response?.sys?.country ?? ""}, ${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).day}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).month}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).year}",
+                                             provider.nowDate.split(" ").first.substring(0,10),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                                           FadeInUp(
                                             duration: Duration(seconds: 2),
                                             child: Text(
-                                              "${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).hour}:${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).minute}",
+                                            provider.nowClock.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -266,6 +266,13 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
+                              clockProvider.nowClock=clockProvider
+                                            .clockResponse?.list?[index].dtTxt
+                                            ?.split(" ")
+                                            .last
+                                            .substring(0, 5) ??
+                                        "";
+                                        clockProvider.nowDate=clockProvider.clockResponse!.list![index].dtTxt.toString();
                               clockProvider.response?.weather?.first.main =
                                   clockProvider.clockResponse?.list?[index]
                                           .weather?.first.main ??
@@ -445,3 +452,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+// "${provider.response?.sys?.country ?? ""}, ${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).day}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).month}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).year}"
