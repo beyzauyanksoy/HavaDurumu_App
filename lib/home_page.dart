@@ -7,6 +7,7 @@ import 'package:showcaseview/showcaseview.dart';
 
 import 'detail_show_case.dart';
 import 'providers/weather_provider.dart';
+import 'services/api_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    getDioClockWeather();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -165,8 +167,8 @@ class _HomePageState extends State<HomePage> {
                                           duration: Duration(seconds: 1),
                                           child: Row(
                                             children: [
-                                              Image.asset(
-                                                  "assets/partly_cloudy.png"),
+                                              Image.network(
+                                                  "http://openweathermap.org/img/wn/${provider.clockItem?.weather?.first.icon ?? "10d"}@2x.png"),
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     bottom: 40),
@@ -183,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                                                         description:
                                                             'dereceyi buradan görüntüleyebilirsiniz',
                                                         child: Text(
-                                                          "${double.parse(provider.response?.main?.temp.toString() ?? "0")}°C",
+                                                         provider.clockItem?.main?.temp.toString() ?? "0000",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -192,9 +194,8 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      provider.response?.weather
-                                                              ?.first.main ??
-                                                          "",
+                                                    provider.clockItem?.weather?[0].main??
+                                                          "aaa",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20),
@@ -217,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                provider.response?.name ?? "",
+                                                provider.response?.name ??  "AA",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -255,17 +256,20 @@ class _HomePageState extends State<HomePage> {
                 Consumer<WeatherProvider>(
                   builder:
                       (BuildContext context, clockProvider, Widget? child) {
-                    return SizedBox(
+                    return Container(
                       //color: Colors.amber,
                       height: 120,
                       child: ListView.builder(
+                      
                         scrollDirection: Axis.horizontal,
                         itemCount:
                             clockProvider.clockResponse?.list?.length ?? 0,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          var clockItem=clockProvider.clockResponse?.list![index];
                           return GestureDetector(
                             onTap: () {
+                            clockProvider.clockItem=clockProvider.clockResponse?.list![index];
                               clockProvider.nowClock=clockProvider
                                             .clockResponse?.list?[index].dtTxt
                                             ?.split(" ")
@@ -294,8 +298,8 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10),
-                                      child: Image.asset(
-                                        "assets/partly_cloudy.png",
+                                      child: Image.network(
+                                        "http://openweathermap.org/img/wn/${clockItem?.weather?.first.icon ?? "10d"}@2x.png",
                                         width: 55,
                                       ),
                                     ),
@@ -365,6 +369,7 @@ class _HomePageState extends State<HomePage> {
                   itemCount: 6,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                   
                     return Padding(
                       padding: const EdgeInsets.only(
                           bottom: 20, left: 18, right: 15),
