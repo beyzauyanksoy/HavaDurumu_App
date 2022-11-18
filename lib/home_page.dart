@@ -33,6 +33,18 @@ class _HomePageState extends State<HomePage> {
     wetProvider!.getWeatherData();
     wetProvider!.getClockData();
     someEvent();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final snackBar = SnackBar(
+        content: const Text('SnackBar oluşturuldu'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {},
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 
   someEvent() {
@@ -142,7 +154,10 @@ class _HomePageState extends State<HomePage> {
                                           FadeInDown(
                                             duration: Duration(seconds: 1),
                                             child: Text(
-                                             provider.nowDate.split(" ").first.substring(0,10),
+                                              provider.nowDate
+                                                  .split(" ")
+                                                  .first
+                                                  .substring(0, 10),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -151,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                                           FadeInUp(
                                             duration: Duration(seconds: 2),
                                             child: Text(
-                                            provider.nowClock.toString(),
+                                              provider.nowClock.toString(),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15),
@@ -171,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                                   "http://openweathermap.org/img/wn/${provider.clockItem?.weather?.first.icon ?? "10d"}@2x.png"),
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    bottom: 40),
+                                                    bottom: 15),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -185,7 +200,10 @@ class _HomePageState extends State<HomePage> {
                                                         description:
                                                             'dereceyi buradan görüntüleyebilirsiniz',
                                                         child: Text(
-                                                         provider.clockItem?.main?.temp.toString() ?? "0000",
+                                                          provider.clockItem
+                                                                  ?.main?.temp
+                                                                  .toString() ??
+                                                              "0000",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
@@ -194,7 +212,10 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     ),
                                                     Text(
-                                                    provider.clockItem?.weather?[0].main??
+                                                      provider
+                                                              .clockItem
+                                                              ?.weather?[0]
+                                                              .main ??
                                                           "aaa",
                                                       style: TextStyle(
                                                           color: Colors.white,
@@ -218,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                provider.response?.name ??  "AA",
+                                                provider.response?.name ?? "AA",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -260,23 +281,26 @@ class _HomePageState extends State<HomePage> {
                       //color: Colors.amber,
                       height: 120,
                       child: ListView.builder(
-                      
                         scrollDirection: Axis.horizontal,
                         itemCount:
                             clockProvider.clockResponse?.list?.length ?? 0,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          var clockItem=clockProvider.clockResponse?.list![index];
+                          var clockItem =
+                              clockProvider.clockResponse?.list![index];
                           return GestureDetector(
                             onTap: () {
-                            clockProvider.clockItem=clockProvider.clockResponse?.list![index];
-                              clockProvider.nowClock=clockProvider
-                                            .clockResponse?.list?[index].dtTxt
-                                            ?.split(" ")
-                                            .last
-                                            .substring(0, 5) ??
-                                        "";
-                                        clockProvider.nowDate=clockProvider.clockResponse!.list![index].dtTxt.toString();
+                              clockProvider.clockItem =
+                                  clockProvider.clockResponse?.list![index];
+                              clockProvider.nowClock = clockProvider
+                                      .clockResponse?.list?[index].dtTxt
+                                      ?.split(" ")
+                                      .last
+                                      .substring(0, 5) ??
+                                  "";
+                              clockProvider.nowDate = clockProvider
+                                  .clockResponse!.list![index].dtTxt
+                                  .toString();
                               clockProvider.response?.weather?.first.main =
                                   clockProvider.clockResponse?.list?[index]
                                           .weather?.first.main ??
@@ -369,7 +393,6 @@ class _HomePageState extends State<HomePage> {
                   itemCount: 6,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                   
                     return Padding(
                       padding: const EdgeInsets.only(
                           bottom: 20, left: 18, right: 15),
@@ -457,4 +480,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
 // "${provider.response?.sys?.country ?? ""}, ${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).day}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).month}/${DateTime.fromMillisecondsSinceEpoch(provider.response?.dt).year}"

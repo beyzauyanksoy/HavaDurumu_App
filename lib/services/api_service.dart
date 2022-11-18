@@ -1,9 +1,18 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:weatherapp/services/logging.dart';
 import '../models/clock_weather_response.dart';
 import '../models/current_weather_response.dart';
 import 'package:http/http.dart' as http;
+
+final Dio _dio=Dio(BaseOptions(baseUrl:"https://api.openweathermap.org/data/2.5/" ,
+connectTimeout: 5000,
+receiveTimeout: 3000,
+//serverin bize veriyi gönderme süresi
+
+))
+..interceptors.add(Logging());
 
 Future<CurrentWeatherResponse?> getCurrentData() async {
   CurrentWeatherResponse weatherResponse;
@@ -38,7 +47,8 @@ Future<HourlyWeatherResponse?> getClockWeather() async {
 
 Future<HourlyWeatherResponse?> getDioClockWeather() async {
 
-    var dioresponse = await Dio().get('https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=1fa3b7baabacefd49574cb80f92eaded&units=metric');
+
+    var dioresponse = await _dio.get('forecast?lat=44.34&lon=10.99&appid=1fa3b7baabacefd49574cb80f92eaded&units=metric');
    if(dioresponse.statusCode==200){
     return HourlyWeatherResponse.fromJson(dioresponse.data);
    }
@@ -49,7 +59,7 @@ Future<HourlyWeatherResponse?> getDioClockWeather() async {
 }
 Future<CurrentWeatherResponse?> getDioCurrentWeather() async {
 
-    var dioresponse = await Dio().get('https://api.openweathermap.org/data/2.5/weather?lat=41.029098&lon=29.017084&appid=1fa3b7baabacefd49574cb80f92eaded&units=metric');
+    var dioresponse = await _dio.get('weather?lat=41.029098&lon=29.017084&appid=1fa3b7baabacefd49574cb80f92eaded&units=metric');
    if(dioresponse.statusCode==200){
     return CurrentWeatherResponse.fromJson(dioresponse.data);
    }
