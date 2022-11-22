@@ -54,6 +54,14 @@ class Logging extends Interceptor {
         break;
 
       default:
+        OneContext().showDialog(
+          builder: (_) => const AlertDialog(
+            title: Text("selamun aleyküm"),
+            content: Text("aleyküm selam!"),
+          ),
+        );
+    }
+    return super.onResponse(response, handler);
     }
 
     @override
@@ -61,4 +69,4 @@ class Logging extends Interceptor {
       return super.onError(err, handler);
     }
   }
-}
+
