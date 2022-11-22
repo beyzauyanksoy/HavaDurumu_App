@@ -34,17 +34,7 @@ class _HomePageState extends State<HomePage> {
     wetProvider!.getClockData();
     someEvent();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final snackBar = SnackBar(
-        content: const Text('SnackBar oluşturuldu'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {},
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    });
+    //WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   someEvent() {
@@ -200,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                                         description:
                                                             'dereceyi buradan görüntüleyebilirsiniz',
                                                         child: Text(
-                                                          provider.clockItem
+                                                          provider.response
                                                                   ?.main?.temp
                                                                   .toString() ??
                                                               "0000",
@@ -213,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                     Text(
                                                       provider
-                                                              .clockItem
+                                                              .response
                                                               ?.weather?[0]
                                                               .main ??
                                                           "aaa",
